@@ -17,6 +17,21 @@ router.get('/', (req, res) => {
         res.sendStatus(500);
         });
 });
-
-
+//POST
+router.post('/', (req, res) => {
+    let newItem = req.body;
+    console.log(`Adding Item`, newItem);
+  
+    let queryText = `INSERT INTO "shopping_list" ("name","quantity","unit") 
+                     VALUES ($1, $2, $3);`;
+    pool
+      .query(queryText, [newItem.name, newItem.quantity, newItem.unit])
+      .then((result) => {
+        res.sendStatus(201);
+      })
+      .catch((error) => {
+        console.log(`Error adding new item`, error);
+        res.sendStatus(500);
+      });
+  });
 module.exports = router;

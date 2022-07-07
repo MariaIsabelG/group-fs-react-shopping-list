@@ -12,7 +12,7 @@ function App() {
         getItems()
 
     }, [])
-
+//get request
     const getItems = () => {
         axios.get('/list')
         .then(function (response) {
@@ -22,7 +22,19 @@ function App() {
                 console.log( 'error in GET', error)
             })
     };
-
+    //Post request
+    function addItem(itemToAdd) {
+        axios.post('/list', itemToAdd)
+          .then(function (response) {
+            console.log('Response from server.', response);
+            //get items
+            getItems()
+          })
+          .catch(function (error) {
+            console.log('Error in POST', error);
+            alert('Unable to add item at this time. Please try again later.');
+          });
+      }
 
 
 
