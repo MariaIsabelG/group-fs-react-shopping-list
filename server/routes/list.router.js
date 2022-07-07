@@ -34,4 +34,24 @@ router.post('/', (req, res) => {
         res.sendStatus(500);
       });
   });
+
+
+
+// Removes a task from the database and from displaying on the page
+
+router.delete('/:id', (req, res) => {
+  let reqId = req.params.id;
+  console.log(`Delete request sent for id ${reqId}`);
+  let queryText = 'DELETE FROM "shopping_list" WHERE id = $1;';
+  pool.query(queryText, [reqId])
+    .then(() => {
+      console.log('Task completed and deleted!')
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log(`Error deleting with query ${queryText}: ${error}`);
+      res.sendStatus(500);
+    })
+})
+
 module.exports = router;
