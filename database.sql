@@ -3,7 +3,7 @@ CREATE TABLE shopping_list (
 	id SERIAL PRIMARY KEY,
 	"name" varchar(80) NOT NULL,
     "quantity" decimal (10,2) NOT NULL,
-    "unit" varchar(20),
+    "unit" varchar(20)
 );
 
 
