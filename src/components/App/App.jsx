@@ -34,9 +34,7 @@ function App() {
     const addItem = (event) => {
         // to stop form reloading
         event.preventDefault();
-
         axios.post('/list', {name: itemName, quantity: itemQuantity, unit: itemUnit})
-        // console.log({name: itemName, quantity: itemQuantity, unit: itemUnit})
         .then((response) => {
             console.log('Response from server:', response);
             //Get items
@@ -69,12 +67,28 @@ function App() {
             </main>
             <ul>
                 {itemList.map((item) => {
-                return (<li key={item.id}>Name: {item.name}, Quantity: {item.quantity}, Unit: {item.unit}</li>)
+                return (<li key={item.id}>Name: {item.name}, Quantity: {item.quantity}, Unit: {item.unit}
+                    <button data-id = {item.id} className = "button delete" >Delete</button>
+                    <button id="completed" data-status="{item.purchased}" data-id={item.id} className = "button complete" >Purchased</button>
+                </li>)
                 })}
             </ul>
 
         </div>
     );
 }
+
+const deleteItem = (event) =>{
+    let itemId = req.params.id;
+    axios.delete({
+      '/list/'{itemId}
+    }).then(function() {
+      console.log('Here');
+      getItems()
+    }).catch(function(error) {
+      alert('Something went wrong in the DELETE /list :(', error)
+    })
+  }
+  //end delete function
 
 export default App;
