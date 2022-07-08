@@ -10,6 +10,8 @@ const pool = new Pool({
   port: 5432, // port for finding the database
   max: 10, // max number of connections for the pool
   idleTimeoutMillis: 30000, // 30 seconds before timeout/cancel query
+  user: 'postgres',
+  password: 'postgres',
 });
 
 // Listener setup on the pool isn't required,
