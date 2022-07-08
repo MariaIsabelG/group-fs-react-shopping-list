@@ -68,7 +68,7 @@ function App() {
             <ul>
                 {itemList.map((item) => {
                 return (<li key={item.id}>Name: {item.name}, Quantity: {item.quantity}, Unit: {item.unit}
-                    <button data-id = {item.id} className = "button delete" >Delete</button>
+                    <button data-id = {item.id} className = "button delete" onClick={() => deleteItem(item.id)}>Delete</button>
                     <button id="completed" data-status="{item.purchased}" data-id={item.id} className = "button complete" >Purchased</button>
                 </li>)
                 })}
@@ -77,13 +77,12 @@ function App() {
         </div>
     );
 }
-
-const deleteItem = (event) =>{
-    let itemId = req.params.id;
-    axios.delete({
-      '/list/'{itemId}
-    }).then(function() {
-      console.log('Here');
+//delete function
+const deleteItem = (item) =>{
+    // console.log('Here is the item.id', item)
+    axios.delete(
+      `/list/${item}`
+    ).then((response)=> {
       getItems()
     }).catch(function(error) {
       alert('Something went wrong in the DELETE /list :(', error)
