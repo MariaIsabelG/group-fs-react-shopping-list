@@ -35,8 +35,6 @@ router.post('/', (req, res) => {
       });
   });
 
-
-
 // Removes a task from the database and from displaying on the page
 
 router.delete('/:id', (req, res) => {
@@ -53,5 +51,33 @@ router.delete('/:id', (req, res) => {
       res.sendStatus(500);
     })
 })
+
+router.put('/:id', (req, res) => {
+  let itemId = req.params.id;
+  let queryText = 'UPDATE "shopping_list" SET "purchased" = True WHERE "id" = $1;';
+  
+  pool.query(queryText, [itemId])
+  .then((dbResponse) => {
+    res.send(dbResponse);
+  })
+  .catch((error) =>{
+    console.log(`Error in update in server: ${error}`);
+    res.sendStatus(500);
+  })
+});
+
+router.put('/', (req, res) => {
+
+  let queryText = 'UPDATE "shopping_list" SET "purchased" = False;';
+  
+  pool.query(queryText)
+  .then((dbResponse) => {
+    res.send(dbResponse);
+  })
+  .catch((error) =>{
+    console.log(`Error in update in server: ${error}`);
+    res.sendStatus(500);
+  })
+});
 
 module.exports = router;
