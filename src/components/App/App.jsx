@@ -47,7 +47,46 @@ function App() {
         setItemName('');
         setItemQuantity('');
         setItemUnit('');
-    }
+    };
+
+    //delete function
+    const deleteItem = (item) =>{
+    // console.log('Here is the item.id', item)
+    axios.delete(
+    `/list/${item}`
+    ).then((response)=> {
+    getItems()
+    }).catch(function(error) {
+    alert('Something went wrong in the DELETE /list :(', error)
+    })
+    };
+
+    // update PUT request
+    const purchasedItem = (item) => {
+    
+    axios.put(
+    `/list/${item}`
+    ).then((response) => {
+    getItems();
+    console.log('Item is purchased:', item);
+    }).catch(function(error){
+    alert('Something went wrong in the PUT /list :(')
+    })
+    };
+ 
+// reset PUT request
+    const resetList = () => {
+    
+    axios.put('/list')
+    .then((response) => {
+    getItems();
+    console.log('Item is purchased');
+    }).catch(function(error){
+    alert('Something went wrong in the PUT reset /list :(')
+    })
+    };
+
+
 
     return (
         <div className="App">
@@ -64,30 +103,26 @@ function App() {
                     <input id="unit-input" onChange={e => setItemUnit(e.target.value)} value={itemUnit}/>
                 <button type="onSubmit">Submit</button>
             </form> 
+            <button className = "button reset" onClick={() => resetList(itemList)}>Reset</button> 
             </main>
             <ul>
                 {itemList.map((item) => {
                 return (<li key={item.id}>Name: {item.name}, Quantity: {item.quantity}, Unit: {item.unit}
-                    <button data-id = {item.id} className = "button delete" onClick={() => deleteItem(item.id)}>Delete</button>
-                    <button id="completed" data-status="{item.purchased}" data-id={item.id} className = "button complete" >Purchased</button>
-                </li>)
+                    {item.purchased ? <p>Purchased!</p> :
+                    <>
+                    <button data-id = {item.id} className = "button delete" onClick={() => deleteItem(item.id)}>Delete</button> 
+                    <button data-id={item.id} className = "button completed" onClick={() => purchasedItem(item.id)} >Purchased</button>
+                    </>
+                    }
+                    </li>)
                 })}
             </ul>
 
         </div>
-    );
-}
-//delete function
-const deleteItem = (item) =>{
-    // console.log('Here is the item.id', item)
-    axios.delete(
-      `/list/${item}`
-    ).then((response)=> {
-      getItems()
-    }).catch(function(error) {
-      alert('Something went wrong in the DELETE /list :(', error)
-    })
-  }
+    )
+};
+
+
   //end delete function
 
 export default App;
