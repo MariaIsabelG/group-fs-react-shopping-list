@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
         res.sendStatus(500);
         });
 });
+
 //POST
 router.post('/', (req, res) => {
     let newItem = req.body;
@@ -35,8 +36,7 @@ router.post('/', (req, res) => {
       });
   });
 
-// Removes a task from the database and from displaying on the page
-
+// DELETES an item from the database and from displaying on the page
 router.delete('/:id', (req, res) => {
   let reqId = req.params.id;
   console.log(`Delete request sent for id ${reqId}`);
@@ -52,6 +52,21 @@ router.delete('/:id', (req, res) => {
     })
 })
 
+// Delete for CLEAR request
+router.delete('/', (req, res) => {
+
+  let queryText = 'DELETE FROM "shopping_list";';
+
+  pool.query(queryText)
+  .then(() => {
+      res.sendStatus(200);
+  }).catch((error) => {
+    console.log('Error in the clear/DELETE', error)
+    res.sendStatus(500)
+  })
+})
+
+// UPDATES purchased item
 router.put('/:id', (req, res) => {
   let itemId = req.params.id;
   let queryText = 'UPDATE "shopping_list" SET "purchased" = True WHERE "id" = $1;';
@@ -66,6 +81,7 @@ router.put('/:id', (req, res) => {
   })
 });
 
+// RESETs and updates list
 router.put('/', (req, res) => {
 
   let queryText = 'UPDATE "shopping_list" SET "purchased" = False;';
