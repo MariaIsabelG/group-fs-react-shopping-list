@@ -54,11 +54,22 @@ function App() {
     // console.log('Here is the item.id', item)
     axios.delete(
     `/list/${item}`
-    ).then((response)=> {
+    ).then(()=> {
     getItems()
     }).catch(function(error) {
     alert('Something went wrong in the DELETE /list :(', error)
     })
+    };
+
+    // clear function
+    const clearList = () => {
+        console.log('clicked clearList')
+        axios.delete(`/list`)
+        .then(() => {
+        getItems()
+        }).catch((error) => {
+        alert('Something went wrong in the CLEAR /list', error)
+        })
     };
 
     // update PUT request
@@ -73,7 +84,7 @@ function App() {
     alert('Something went wrong in the PUT /list :(')
     })
     };
- 
+
 // reset PUT request
     const resetList = () => {
     
@@ -92,7 +103,6 @@ function App() {
         <div className="App">
             <Header />
             <main>
-                <p>Under Construction...</p>
             <h2>Add an Item:</h2>
             <form onSubmit={addItem}>
                 <label htmlFor="name-input">Item:</label>
@@ -103,21 +113,23 @@ function App() {
                     <input id="unit-input" onChange={e => setItemUnit(e.target.value)} value={itemUnit}/>
                 <button type="onSubmit">Submit</button>
             </form> 
-            <button className = "button reset" onClick={() => resetList(itemList)}>Reset</button> 
+            <button className = "button reset" onClick={() => resetList(itemList)}>Reset List</button>
+            <button className = "button clear" onClick={() => clearList(itemList)}>Clear List</button>
             </main>
-            <ul>
-                {itemList.map((item) => {
-                return (<li key={item.id}>Name: {item.name}, Quantity: {item.quantity}, Unit: {item.unit}
-                    {item.purchased ? <p>Purchased!</p> :
-                    <>
-                    <button data-id = {item.id} className = "button delete" onClick={() => deleteItem(item.id)}>Delete</button> 
-                    <button data-id={item.id} className = "button completed" onClick={() => purchasedItem(item.id)} >Purchased</button>
-                    </>
-                    }
-                    </li>)
-                })}
-            </ul>
-
+            <div className = "stack-containers">
+                <div>
+                    {itemList.map((item) => {
+                    return (<h5 key={item.id}>Name: {item.name}, Quantity: {item.quantity}, Unit: {item.unit}
+                        {item.purchased ? <p>Purchased!</p> :
+                        <>
+                        <button data-id = {item.id} className = "button delete" onClick={() => deleteItem(item.id)}>Delete</button> 
+                        <button data-id={item.id} className = "button completed" onClick={() => purchasedItem(item.id)} >Purchased</button>
+                        </>
+                        }
+                        </h5>)
+                    })}
+                </div>
+            </div>
         </div>
     )
 };
